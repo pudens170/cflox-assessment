@@ -7,19 +7,16 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import com.cflox.number_converter.enumeration.ConversionType;
 import com.cflox.number_converter.enumeration.Success;
 import com.cflox.number_converter.model.AuditTrail;
 import com.cflox.number_converter.pojo.ApplicationResponse;
 import com.cflox.number_converter.repository.AuditTrailRepository;
 
-@ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class ConverterServiceTest {
 	@Mock
 	private AuditTrailRepository auditrepository;

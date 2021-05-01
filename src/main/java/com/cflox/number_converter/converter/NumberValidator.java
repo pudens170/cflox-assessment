@@ -7,7 +7,7 @@ import com.cflox.number_converter.enumeration.ConversionType;
 @Component
 public class NumberValidator {
 
-	public static boolean isBinary(String number) {
+	public  boolean isBinary(String number) {
 		if (number.length() == 1) {
 			return false;
 		}
@@ -21,14 +21,14 @@ public class NumberValidator {
 		return false;
 	}
 
-	public static boolean isNumberWithinRange(int number) {
-		if (number <= 0 || number > 3999) {
-			return false;
+	public  boolean isNumberWithinRange(int number) {
+		if (number > 0 && number <4000) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
-	public static ConversionType getConversionType(String number) {
+	public  ConversionType getConversionType(String number) {
 		if(isBinary(number)) {
 			return ConversionType.BINARY;
 		}

@@ -22,6 +22,8 @@ public class NumberConverterResource {
 
 	@Autowired
 	private Convertible converter;
+	@Autowired
+	private NumberValidator numberValidator;
 
 	@Autowired
 	private ConverterService converterService;
@@ -37,7 +39,7 @@ public class NumberConverterResource {
 		Optional<String> resultOpt = Optional.ofNullable(converter.convert(numberToConvert));
 		if (resultOpt.isPresent()) {
 			result = resultOpt.get();
-			ConversionType conversionType = NumberValidator.getConversionType(numberToConvert);
+			ConversionType conversionType = numberValidator.getConversionType(numberToConvert);
 			AuditTrail auditTrail = new AuditTrail(conversionType, LocalDateTime.now(), numberToConvert, result);
 			converterService.saveRequest(auditTrail);
 			converterResponsePojo.setOuput(result);

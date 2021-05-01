@@ -2,26 +2,20 @@ package com.cflox.number_converter.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.cflox.number_converter.enumeration.ConversionType;
 import com.cflox.number_converter.exception.NumberOutOfRangeException;
 
 
-@ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class NumberConverterTest {
 
+	@Autowired
 	private NumberConverter numberConverter;
-
-	
-	@BeforeEach
-	public void setUp() {
-		numberConverter = new NumberConverter();
-	}
 
 	@Test
 	@DisplayName("Conversion successfull test")
@@ -46,5 +40,12 @@ public class NumberConverterTest {
 		String input = "4000";
 		assertThrows(NumberOutOfRangeException.class, () -> numberConverter.convert(input));
 
+	}
+	@Test
+	public  void getConversionType() {
+		String input = "100100";
+		String result = numberConverter.convert(input);	
+		assertThat(result).isEqualTo("XXXVI");
+		
 	}
 }

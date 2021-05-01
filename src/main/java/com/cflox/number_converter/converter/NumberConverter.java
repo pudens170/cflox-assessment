@@ -13,19 +13,23 @@ public class NumberConverter implements Convertible {
 
 	@Autowired
 	private NumberFactory numberFactory;
+	
+	@Autowired
+	private NumberValidator numberValidator;
 
 	@Override
 	public String convert(String input) {
 
 		int number = Integer.parseInt(input.trim());
-		boolean isBinary = NumberValidator.isBinary(input);
+		boolean isBinary = numberValidator.isBinary(input);
 
 		if (isBinary) {
 			ConversionType conversionType = ConversionType.BINARY;
 			Convertible convertible = numberFactory.getConverter(conversionType.value);
 			number = Integer.parseInt(convertible.convert(input));
 		}
-		if (!NumberValidator.isNumberWithinRange(number)) {
+	
+		if (!numberValidator.isNumberWithinRange(number)) {
 			throw new NumberOutOfRangeException();
 		}
 
