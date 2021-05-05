@@ -1,13 +1,13 @@
 package com.cflox.number_converter.resource;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cflox.number_converter.converter.Convertible;
+import com.cflox.number_converter.converter.NumberFactory;
 import com.cflox.number_converter.converter.NumberValidator;
 import com.cflox.number_converter.enumeration.ConversionType;
 import com.cflox.number_converter.model.AuditTrail;
@@ -21,11 +21,6 @@ import io.swagger.annotations.ApiParam;
 public class NumberConverterResource {
 
 	@Autowired
-	private Convertible converter;
-	@Autowired
-	private NumberValidator numberValidator;
-
-	@Autowired
 	private ConverterService converterService;
 
 	@Autowired
@@ -34,17 +29,18 @@ public class NumberConverterResource {
 	@GetMapping
 	@ApiOperation(value = "convert to roman numerals", notes = "convert either binary or decimal to roman numerals", response = ConverterResponsePojo.class)
 	public ConverterResponsePojo convertNumber(
-			@ApiParam(value = "number that you want to convert to roman equivalent", required = true) @RequestParam("number") String numberToConvert) {
-		String result;
-		Optional<String> resultOpt = Optional.ofNullable(converter.convert(numberToConvert));
-		if (resultOpt.isPresent()) {
-			result = resultOpt.get();
-			ConversionType conversionType = numberValidator.getConversionType(numberToConvert);
-			AuditTrail auditTrail = new AuditTrail(conversionType, LocalDateTime.now(), numberToConvert, result);
-			converterService.saveRequest(auditTrail);
-			converterResponsePojo.setOuput(result);
+			@ApiParam(value = "number that you want to convert to roman equivalent", required = true) @RequestParam("number") String numberToConvert,
+			@ApiParam(value = "Type of conversion you want to perform,at the moment only \"Number Converter\" is allowed", required = true) @RequestParam("type") String operationType) {
 
-		}
+		String result;
+		Convertible convertible = NumberFactory.getConverter(operationType);
+		result = convertible.convert(numberToConvert);
+
+		converterResponsePojo.setOuput(result);
+
+		ConversionType conversionType = NumberValidator.getConversionType(numberToConvert);
+		AuditTrail auditTrail = new AuditTrail(conversionType, LocalDateTime.now(), numberToConvert, result);
+		converterService.saveRequest(auditTrail);
 
 		return converterResponsePojo;
 	}

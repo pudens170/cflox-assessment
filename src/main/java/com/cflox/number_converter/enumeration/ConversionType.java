@@ -1,7 +1,7 @@
 package com.cflox.number_converter.enumeration;
 
 public enum ConversionType {
-	BINARY("Binary Conversion"), DECIMAL("Decimal Conversion ");
+	BINARY("Binary Converter"), DECIMAL("Decimal Converter ");
 
 	public String value;
 

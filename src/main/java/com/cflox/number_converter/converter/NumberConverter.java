@@ -1,6 +1,5 @@
 package com.cflox.number_converter.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cflox.number_converter.enumeration.ConversionType;
 import com.cflox.number_converter.exception.NumberOutOfRangeException;
@@ -11,25 +10,19 @@ public class NumberConverter implements Convertible {
 	NumberConverter() {
 	}
 
-	@Autowired
-	private NumberFactory numberFactory;
-	
-	@Autowired
-	private NumberValidator numberValidator;
-
 	@Override
 	public String convert(String input) {
-
 		int number = Integer.parseInt(input.trim());
-		boolean isBinary = numberValidator.isBinary(input);
+
+		boolean isBinary = NumberValidator.isBinary(input);
 
 		if (isBinary) {
 			ConversionType conversionType = ConversionType.BINARY;
-			Convertible convertible = numberFactory.getConverter(conversionType.value);
+			Convertible convertible = NumberFactory.getConverter(conversionType.value);
 			number = Integer.parseInt(convertible.convert(input));
 		}
-	
-		if (!numberValidator.isNumberWithinRange(number)) {
+
+		if (!NumberValidator.isNumberWithinRange(number)) {
 			throw new NumberOutOfRangeException();
 		}
 

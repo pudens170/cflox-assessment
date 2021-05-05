@@ -1,7 +1,12 @@
 package com.cflox.number_converter.converter;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+
 import com.cflox.number_converter.enumeration.Error;
 
+@Component
+@Primary
 public class BinaryToDecimalConverter implements Convertible {
 	BinaryToDecimalConverter() {
 	}
